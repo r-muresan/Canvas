@@ -92,6 +92,7 @@
                 top: 35vh;
                 z-index: 100;
                 font-size: 10vw;
+                
             }
             .small{
                 width: 100vw; 
@@ -135,7 +136,8 @@
         </style>
         <div style="height: 100vh; width: 100vw;">
             <div id="controls" class="animate__animated animate__fadeIn
-                animate__delay-3s" style="height: 7vh; width: 100vw;">
+                animate__delay-2s animate__faster" style="height: 7vh; width:
+                100vw;">
                 <div class="color"
                     onclick="save()">
                     <h1>
@@ -200,7 +202,7 @@
             </div>
 
             <div id="canvasdiv" class="animate__animated animate__fadeIn
-                animate__delay-3s">
+                animate__delay-2s animate__faster">
                 <canvas id="canvas">Your browser does not support the HTML5
                     canvas tag.</canvas>
             </div>
@@ -208,12 +210,13 @@
         <h1 id="submitted" class="big" style="text-align: center; display: none;
             user-select: none; font-family: Georgia;">Submitted For Approval
         </h1>
-        <h1 class="big animate__animated animate__fadeOut animate__delay-2s"
+        <h1 class="big animate__animated animate__fadeOut animate__delay-2s
+            animate__faster"
             style="text-align: center;
             user-select: none; font-family: Georgia;">Leave Your Mark!
         </h1>
         <h1 class="small animate__animated animate__fadeOut
-            animate__delay-2s"
+            animate__delay-2s animate__faster"
             style="text-align: center;
             user-select: none; font-family: Georgia;">Crestwood Graffiti Wall
         </h1>
@@ -221,47 +224,49 @@
 
 
         <script>
-                const c = document.getElementById("canvas");
-                let color = "white";
-                // c.addEventListener("click", penTool); // fires after mouse left btn is released
-                c.addEventListener("mousedown", setLastCoords); // fires before mouse left btn is released
-                c.addEventListener("mousemove", freeForm);
+            let color = "white";
+const c = document.getElementById("canvas");
+    // c.addEventListener("click", penTool); // fires after mouse left btn is released
+    c.addEventListener("mousedown", setLastCoords); // fires before mouse left btn is released
+    c.addEventListener("mousemove", freeForm);
 
-               
-                const ctx = c.getContext("2d");
-                
-                function setLastCoords(e) {
-                    const {x, y} = c.getBoundingClientRect();
-                    lastX = e.clientX - x;
-                    lastY = e.clientY - y;
-                }
-                
-                function freeForm(e) {
-                    if (e.buttons !== 1) return; // left button is not pushed yet
-                    penTool(e);
-                }
-                
-                function penTool(e) {
-                    const {x, y} = c.getBoundingClientRect();
-                    const newX = e.clientX - x;
-                    const newY = e.clientY - y;
-                    
-                    ctx.beginPath();
-                    ctx.lineWidth = document.getElementById("slider").value;
-                    ctx.moveTo(lastX, lastY);
-                    ctx.lineTo(newX, newY);
-                    ctx.lineJoin = ctx.lineCap = 'round';
-                    ctx.strokeStyle = color;
-                    ctx.fill();
-                    ctx.stroke();
-                    ctx.closePath();
-                    
-                    lastX = newX;
-                    lastY = newY;
-                }
-                
-                let lastX = 0;
-                let lastY = 0;  
+
+    const ctx = c.getContext("2d");
+
+    let lastX = 50;
+    let lastY = 0;
+
+    function setLastCoords(e) {
+        const {x, y} = c.getBoundingClientRect();
+        lastX = e.clientX - x;
+        lastY = e.clientY - y;
+    }
+
+
+    function freeForm(e) {
+        if (e.buttons !== 1) return; // left button is not pushed yet
+        penTool(e);
+    }
+
+
+    function penTool(e) {
+        const {x, y} = c.getBoundingClientRect();
+        const newX = e.clientX - x;
+        const newY = e.clientY - y;
+
+        ctx.beginPath();
+        ctx.lineWidth = document.getElementById("slider").value;
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(newX, newY);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        ctx.closePath();
+
+       lastX = newX;
+        lastY = newY;
+    }
+
+
 
 
 
@@ -282,6 +287,8 @@
                     if(window.innerHeight < window.innerWidth){
                         c.width = window.innerWidth -50 - window.innerHeight*0.07;
                         c.height = window.innerHeight -50 - window.innerHeight*0.07;
+                        console.log(c.width);
+                        console.log(c.height);
                     }
                     else{
                         c.width = window.innerWidth - 50;
@@ -324,7 +331,7 @@
                     for(var i = 0; i < jsonObject.length; i++){
                         current += "url(" + jsonObject[i].drawing + "), ";
                     }
-                    document.getElementById("canvas").style.backgroundImage = current + "url(https://cutewallpaper.org/21/gif-background-hd/Animated-Gif-Background-Hd-Wallpaper-Images-Walpaper-GIF-.gif)";
+                    document.getElementById("canvas").style.backgroundImage = current + "url(https://cdn.discordapp.com/attachments/697449518567915621/720015533969244261/ctreeboard2.jpg)";
     
                 });
             }
