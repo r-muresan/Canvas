@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1,
+            shrink-to-fit=no">
+
+        <title>Admin Page</title>
+    </head>
+
+    <body>
+        <style>
+            body{
+                margin: 0;
+                background-color: #d2d2d2;
+            }
+            .drawing{
+                height: 100vh;
+                list-style: none;
+                display: flex;
+                margin-bottom: 20px;
+            } 
+            .image{
+                background-size:100% 100%;
+                height: 100%;
+                width: 100%;
+                flex: 5;
+            }
+            .buttons{
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .accept,.decline{
+                height: 100%;
+                text-align: center;
+                padding-top: 50%;
+                font-size: 100%;
+                font-size: 40px;
+            }
+            .accept{
+                background-color: green;
+            }
+            .decline{
+                background-color: red;
+            }
+            #drawings{
+                padding: 0;
+                margin: 0;
+            }
+            .accept,.drawing {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+        </style>
+        <div style="width: 100vw;">
+            <ul id="drawings">
+
+            </ul>
+
+
+        </div>
+
+
+
+        <script>
+            let back = "https://cutewallpaper.org/21/gif-background-hd/Animated-Gif-Background-Hd-Wallpaper-Images-Walpaper-GIF-.gif";
+            window.onload = function(){
+                recive();
+            }      
+              function recive(){
+            let acceptedImg;
+                fetch('/getDrawingsWaiting')
+                .then(function(response) {
+                     return response.json();
+                })
+                .then(function(jsonObject) {
+                    for(var i = 0; i <jsonObject.length; i++){
+                        var ul = document.getElementById("drawings");
+                        var li = document.createElement("li");
+                        var img = document.createElement("div");
+                        var buttons = document.createElement("div");
+                        var accept = document.createElement("div");
+                        var decline = document.createElement("div");
+
+                        accept.appendChild(document.createTextNode("ACCEPT"));
+                        decline.appendChild(document.createTextNode("DECLINE"));
+                        accept.setAttribute("class", "accept");
+                        decline.setAttribute("class", "decline");
+
+        
+
+                        img.setAttribute("style", "background-image: url(" + jsonObject[i].drawing + "), url(" + back + ")");
+                        img.setAttribute("class", "image");
+                        li.setAttribute("class", "drawing");
+                        buttons.setAttribute("class", "buttons")
+
+                        accept.setAttribute("onclick","acceptF('" + jsonObject[i].drawing + "');");
+                        decline.setAttribute("onclick","declineF('" + jsonObject[i].drawing + "');");
+
+                        buttons.appendChild(accept);
+                        buttons.appendChild(decline);
+
+                        li.appendChild(img);
+                        li.appendChild(buttons);
+                        ul.appendChild(li)
+                     }
+                    });
+                }
+                function acceptF(data){
+                    console.log("accepted");
+                    fetch("/acceptDrawing", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            drawing: data
+                        })
+                   });
+                }
+                function declinetF(data){
+                    console.log("declined");
+                    fetch("/acceptDrawing", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            drawing: data
+                        })
+                   });
+                }
+            </script>
+    </body>
+</html>
