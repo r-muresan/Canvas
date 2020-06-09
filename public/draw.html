@@ -192,6 +192,12 @@
                         White
                     </h1>
                 </div>
+                <div class="color" style="background: pink;"
+                    onclick="erase()">
+                    <h1>
+                        Erase
+                    </h1>
+                </div>
                 <div class="size">
                     <h1>
                         Brush Size
@@ -319,6 +325,9 @@ const c = document.getElementById("canvas");
               }
               function changeColor(new_color){
                   color = new_color;
+              }
+              function erase(){
+                ctx.clearRect(0, 0, c.width, c.height);
               }
               
               function recive(){
