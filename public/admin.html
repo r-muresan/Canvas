@@ -127,9 +127,9 @@
                         })
                    });
                 }
-                function declinetF(data){
+                function declineF(data){
                     console.log("declined");
-                    fetch("/acceptDrawing", {
+                    fetch("/declineDrawing", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"

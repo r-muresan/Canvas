@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express');
 const app = express();
 var http = require('http').createServer(app);
@@ -6,80 +8,50 @@ const { resolve } = require("path");
 app.use(express.json({ limit: '50mb' }));
 
 
-var MongoClient = require('mongodb').MongoClient;
-let url = "mongodb://localhost:27017/";
 
 
 
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASS + "@cluster0-k94hv.mongodb.net/<dbname>?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true }, { useUnifiedTopology: true });
 
 
-app.post("/newDrawing", (req, res) => {
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("GraffitiWall");
-        dbo.collection("Drawing_Waiting").insertOne({ drawing: req.body.drawing }, function (err, res) {
-            if (err) throw err;
-            db.close();
-        });
+client.connect(err => {
+    app.post("/newDrawing", (req, res) => {
+        client.db("Canvas").collection("Drawings_Waiting").insertOne({ drawing: req.body.drawing });
+        res.status(200);
     });
-    res.status(200);
-});
 
 
-app.get("/getDrawingsAccepted", (req, res) => {
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("GraffitiWall");
-        dbo.collection("Drawing").find({}).toArray(function (err, result) {
+    app.get("/getDrawingsAccepted", (req, res) => {
+        client.db("Canvas").collection("Drawings").find({}).toArray(function (err, result) {
             if (err) throw err;
             res.send(result);
-            db.close();
-        });
+        });;
     });
-});
-app.get("/getDrawingsWaiting", (req, res) => {
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("GraffitiWall");
-        dbo.collection("Drawing_Waiting").find({}).toArray(function (err, result) {
+
+    app.get("/getDrawingsWaiting", (req, res) => {
+        client.db("Canvas").collection("Drawings_Waiting").find({}).toArray(function (err, result) {
             if (err) throw err;
             res.send(result);
-            db.close();
-        });
+        });;
+    });
+
+
+    app.post("/acceptDrawing", (req, res) => {
+        client.db("Canvas").collection("Drawings_Waiting").deleteOne({ "drawing": req.body.drawing });
+        client.db("Canvas").collection("Drawings").insertOne({ drawing: req.body.drawing });
+        res.status(200);
+    });
+
+    app.post("/declineDrawing", (req, res) => {
+
+        client.db("Canvas").collection("Drawings_Waiting").deleteOne({ "drawing": req.body.drawing });
+
+        res.status(200);
     });
 });
 
-app.post("/acceptDrawing", (req, res) => {
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("GraffitiWall");
-        dbo.collection("Drawing_Waiting").deleteOne({ "drawing": req.body.drawing }, function (err, obj) {
-            if (err) throw err;
-            db.close();
-        });
-        dbo.collection("Drawing").insertOne({ drawing: req.body.drawing }, function (err, res) {
-            if (err) throw err;
-            db.close();
-        });
-    });
-    res.status(200);
-});
-
-app.post("/declineDrawing", (req, res) => {
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("GraffitiWall");
-        dbo.collection("Drawing_Waiting").deleteOne({ "drawing": req.body.drawing }, function (err, obj) {
-            if (err) throw err;
-            db.close();
-        });
-    });
-    res.status(200);
-});
-
-
-
-// perform actions on the collection object
 
 
 

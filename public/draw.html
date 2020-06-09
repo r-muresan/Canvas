@@ -7,6 +7,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1,
             shrink-to-fit=no">
 
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+            />
+
         <title>CPC's Virtual Festival of Arts, Music and Technology</title>
     </head>
 
@@ -82,13 +86,42 @@
              .color>h1{
                  font-size: 20px;
             }
+            .big{
+                width: 100vw; 
+                position: fixed; 
+                top: 35vh;
+                z-index: 100;
+                font-size: 10vw;
+            }
+            .small{
+                width: 100vw; 
+                position: fixed; 
+                top: 42.5vh;
+                z-index: 100; 
+                font-size: 5vw;
+            }
             }
             @media (min-aspect-ratio: 1/1) {
             #canvasdiv {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                }
+            }
+            .big{
+                width: 100vw; 
+                position: fixed; 
+                top: 25vh;
+                z-index: 100;
+                font-size: 5vw;
+            }
+            .small{
+                width: 100vw; 
+                position: fixed; 
+                top: 40vh;
+            z-index: 100; 
+            font-size: 2vw;
+
+            }
             }
             #slider{
                 width: 50%;
@@ -101,7 +134,8 @@
              
         </style>
         <div style="height: 100vh; width: 100vw;">
-            <div id="controls" style="height: 7vh; width: 100vw;">
+            <div id="controls" class="animate__animated animate__fadeIn
+                animate__delay-3s" style="height: 7vh; width: 100vw;">
                 <div class="color"
                     onclick="save()">
                     <h1>
@@ -117,43 +151,43 @@
                 <div class="color" style="background: yellow;"
                     onclick="changeColor('yellow')">
                     <h1>
-                        Red
+                        Yellow
                     </h1>
                 </div>
                 <div class="color" style="background: blue;"
                     onclick="changeColor('blue')">
                     <h1>
-                        Red
+                        Blue
                     </h1>
                 </div>
                 <div class="color" style="background: green;"
                     onclick="changeColor('green')">
                     <h1>
-                        Red
+                        Green
                     </h1>
                 </div>
                 <div class="color" style="background: brown;"
                     onclick="changeColor('brown')">
                     <h1>
-                        Red
+                        Brown
                     </h1>
                 </div>
                 <div class="color" style="background: purple;"
                     onclick="changeColor('purple')">
                     <h1>
-                        Red
+                        Purple
                     </h1>
                 </div>
                 <div class="color" style="background: black;"
                     onclick="changeColor('black')">
                     <h1 style="color: white;">
-                        Red
+                        Black
                     </h1>
                 </div>
                 <div class="color" style="background: white;"
                     onclick="changeColor('white')">
                     <h1>
-                        Red
+                        White
                     </h1>
                 </div>
                 <div class="size">
@@ -165,12 +199,24 @@
                 </div>
             </div>
 
-            <div id="canvasdiv">
+            <div id="canvasdiv" class="animate__animated animate__fadeIn
+                animate__delay-3s">
                 <canvas id="canvas">Your browser does not support the HTML5
                     canvas tag.</canvas>
             </div>
-
         </div>
+        <h1 id="submitted" class="big" style="text-align: center; display: none;
+            user-select: none; font-family: Georgia;">Submitted For Approval
+        </h1>
+        <h1 class="big animate__animated animate__fadeOut animate__delay-2s"
+            style="text-align: center;
+            user-select: none; font-family: Georgia;">Leave Your Mark!
+        </h1>
+        <h1 class="small animate__animated animate__fadeOut
+            animate__delay-2s"
+            style="text-align: center;
+            user-select: none; font-family: Georgia;">Crestwood Graffiti Wall
+        </h1>
 
 
 
@@ -245,7 +291,6 @@
               function save(){
               
                 // document.getElementById("canvas").style.backgroundImage = current + ",url(" + c.toDataURL() + ")" 
-              
                 fetch("/newDrawing", {
                     method: "POST",
                      headers: {
@@ -257,6 +302,13 @@
                             quality: 0.0
                      })
                     })});
+
+                    document.getElementById("submitted").style.display = "block";
+                    document.getElementById("canvas").style.display = "none";
+                    document.getElementById("controls").style.display = "none";
+                    setTimeout(function direct(){
+                        window.location.replace("http://vfa.crestwood.on.ca/home.html");
+                    }, 1500);
               }
               function changeColor(new_color){
                   color = new_color;
