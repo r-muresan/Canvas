@@ -19,6 +19,7 @@
             body{
                 overflow: hidden;
                 margin: 0;
+                background-color: #d2d2d2;
             }
 
             #controls{
@@ -38,7 +39,6 @@
                 width: 100%;
                 padding-left: 1;
                 margin: 5px;
-                border: 2px solid black;
                 border-radius: 20px;
                 text-align: center; 
                 flex: 1 
@@ -48,14 +48,13 @@
                 width: 100%;
                 padding-left: 1;
                 margin: 5px;
-                border: 2px solid black;
                 border-radius: 20px;
                 text-align: center;  
                 flex: 2;
             }
             .color>h1{
                  color: black;   
-                 margin-top: 8px;
+                 margin-top: 12px;
                  font-size: 30px;
                  text-decoration: none;
                  -webkit-touch-callout: none; /* iOS Safari */
@@ -77,6 +76,7 @@
             #controls{
                 box-sizing: border-box;
                 flex-wrap: wrap;
+                justify-content: center;
              }
              .color{
                 height: 6vh;
@@ -127,21 +127,29 @@
             #slider{
                 width: 50%;
                 transform: scale(1.5);
+                margin-top: 3px;
             }
             .size >h1{
                 font-size: 20px;
                 margin: 0;
+                margin-top: 6px;
             }
              
         </style>
         <div style="height: 100vh; width: 100vw;">
             <div id="controls" class="animate__animated animate__fadeIn
-                animate__delay-2s animate__faster" style="height: 7vh; width:
+                animate__delay-2s animate__faster" style="height: 7.5vh; width:
                 100vw;">
                 <div class="color"
-                    onclick="save()">
+                    onclick="save()" style="border: 2px solid black;">
                     <h1>
-                        Save
+                        Submit
+                    </h1>
+                </div>
+                <div class="color"
+                    onclick="back()" style="border: 2px solid black;">
+                    <h1>
+                        Back
                     </h1>
                 </div>
                 <div class="color" style="background: red;"
@@ -158,7 +166,7 @@
                 </div>
                 <div class="color" style="background: blue;"
                     onclick="changeColor('blue')">
-                    <h1>
+                    <h1 style="color: white;">
                         Blue
                     </h1>
                 </div>
@@ -170,13 +178,13 @@
                 </div>
                 <div class="color" style="background: brown;"
                     onclick="changeColor('brown')">
-                    <h1>
+                    <h1 style="color: white;">
                         Brown
                     </h1>
                 </div>
                 <div class="color" style="background: purple;"
                     onclick="changeColor('purple')">
-                    <h1>
+                    <h1 style="color: white;">
                         Purple
                     </h1>
                 </div>
@@ -198,7 +206,7 @@
                         Erase
                     </h1>
                 </div>
-                <div class="size">
+                <div class="size" style="border: 2px solid black">
                     <h1>
                         Brush Size
                     </h1>
@@ -325,6 +333,9 @@ const c = document.getElementById("canvas");
               }
               function changeColor(new_color){
                   color = new_color;
+              }
+              function back(){
+                window.location.replace("http://vfa.crestwood.on.ca/home.html");
               }
               function erase(){
                 ctx.clearRect(0, 0, c.width, c.height);
